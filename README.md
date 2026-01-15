@@ -1,3 +1,5 @@
+<div align="center">
+
 # Ultimate Video Controller 🎥✨
 
 [![Download Extension](https://img.shields.io/badge/Download--Unpacked-brightgreen)](https://github.com/QuantumVoidd/Ultimate-Video-Controller/releases/latest)
@@ -5,6 +7,10 @@
 ![Visitors](https://api.visitorbadge.io/api/VisitorHit?user=QuantumVoidd&repo=Ultimate-Video-Controller&countColor=%2337B1E7A)
 
 ![GitHub stars](https://img.shields.io/github/stars/QuantumVoidd/Ultimate-Video-Controller?style=social)
+
+</div>
+
+---
 
 The most advanced video control suite for the web. Unlock professional-grade color grading, audio mastering, and geometry tools on YouTube, Twitch, Netflix, Prime Video, Disney+, and any other HTML5 video player.
 
