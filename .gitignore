@@ -1,0 +1,21 @@
+# OS Metadata
+.DS_Store
+Thumbs.db
+
+# Developer Tools & Backups
+*.bak
+*.tmp
+*.swp
+.vscode/
+.idea/
+
+# Chrome Extension Specifics
+# Ignore zipped versions of the extension (only keep source files)
+*.zip
+*.crx
+*.pem
+
+# Local Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
