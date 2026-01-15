@@ -448,48 +448,113 @@ function applyEffects() {
 }
 
 // --- ICON LOADER ---
-const iconURL = chrome.runtime.getURL('icon128.png'); // Back to PNG
+const iconURL = chrome.runtime.getURL('icon128.png'); 
 
 const overlays = new Map();
+
 function trackLoop() {
   const videos = document.querySelectorAll('video');
-  overlays.forEach((el, video) => { if (!document.body.contains(video)) { el.remove(); overlays.delete(video); } });
+
+  // 1. CLEANUP: Remove overlays if video is missing OR hidden/too small
+  overlays.forEach((box, video) => {
+    const rect = video.getBoundingClientRect();
+    // If video is removed from DOM, has 0 size, or is explicitly hidden
+    const isHidden = !document.body.contains(video) || 
+                     rect.width < 50 || 
+                     rect.height < 50 || 
+                     window.getComputedStyle(video).display === 'none';
+
+    if (isHidden) { 
+      box.remove(); 
+      overlays.delete(video); 
+    }
+  });
+
+  // 2. CREATION & UPDATE
   videos.forEach(video => {
+    // Skip small/hidden videos immediately
     if (video.offsetWidth < 100 || video.offsetHeight < 100) return;
+
+    // Create if doesn't exist
     if (!overlays.has(video)) {
-      const existing = document.elementFromPoint(video.getBoundingClientRect().left + 10, video.getBoundingClientRect().top + 10);
-      if(existing && existing.classList.contains('vcc-icon')) return;
-      const box = document.createElement('div'); box.className = 'vcc-overlay-box';
+      // Double check strictly for existing overlay to prevent duplicates
+      const existingOverlay = document.elementFromPoint(video.getBoundingClientRect().left + 10, video.getBoundingClientRect().top + 10);
+      if(existingOverlay && existingOverlay.classList.contains('vcc-icon')) return;
+
+      const box = document.createElement('div'); 
+      box.className = 'vcc-overlay-box';
       
       const icon = document.createElement('div'); 
       icon.className = 'vcc-icon'; 
       icon.style.backgroundImage = `url('${iconURL}')`;
-      // --- FORCE SIZE OVERRIDE (Safety) ---
-      icon.style.width = '20px'; icon.style.height = '20px'; icon.style.backgroundSize = 'contain';
+      icon.style.width = '20px'; 
+      icon.style.height = '20px'; 
+      icon.style.backgroundSize = 'contain';
       
-      icon.addEventListener('click', (e) => { e.stopPropagation(); e.preventDefault(); document.getElementById('vcc-menu').classList.toggle('visible'); });
-      box.appendChild(icon); document.body.appendChild(box); overlays.set(video, box);
+      icon.addEventListener('click', (e) => { 
+        e.stopPropagation(); 
+        e.preventDefault(); 
+        document.getElementById('vcc-menu').classList.toggle('visible'); 
+      });
+      
+      box.appendChild(icon); 
+      document.body.appendChild(box); 
+      overlays.set(video, box);
+
+      // Sync Loop Logic
       video.addEventListener('timeupdate', () => { 
-          if(state.loopA !== null && state.loopB !== null) { if(video.currentTime >= state.loopB) video.currentTime = state.loopA; }
+          if(state.loopA !== null && state.loopB !== null) { 
+            if(video.currentTime >= state.loopB) video.currentTime = state.loopA; 
+          }
           const t = video.currentTime;
-          const h = Math.floor(t / 3600); const m = Math.floor((t % 3600) / 60); const s = Math.floor(t % 60); const ms = Math.floor((t % 1) * 1000);
+          const h = Math.floor(t / 3600); 
+          const m = Math.floor((t % 3600) / 60); 
+          const s = Math.floor(t % 60); 
+          const ms = Math.floor((t % 1) * 1000);
           const timeStr = `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}.${ms.toString().padStart(3,'0')}`;
-          const el = document.getElementById('vcc-timecode'); if(el) el.textContent = timeStr;
+          const el = document.getElementById('vcc-timecode'); 
+          if(el) el.textContent = timeStr;
       });
     }
+
+    // Update Position
     const box = overlays.get(video);
+    if (!box) return;
+
+    // Ensure overlay is in full screen container if needed
     const fsElement = document.fullscreenElement;
     const menu = document.getElementById('vcc-menu');
-    if (fsElement) { if (box.parentElement !== fsElement) fsElement.appendChild(box); if (menu && menu.parentElement !== fsElement) fsElement.appendChild(menu); } 
-    else { if (box.parentElement !== document.body) document.body.appendChild(box); if (menu && menu.parentElement !== document.body) document.body.appendChild(menu); }
+    
+    if (fsElement) { 
+        if (box.parentElement !== fsElement) fsElement.appendChild(box); 
+        if (menu && menu.parentElement !== fsElement) fsElement.appendChild(menu); 
+    } else { 
+        if (box.parentElement !== document.body) document.body.appendChild(box); 
+        if (menu && menu.parentElement !== document.body) document.body.appendChild(menu); 
+    }
+
     const rect = video.getBoundingClientRect();
-    box.style.top = rect.top + 'px'; box.style.left = rect.left + 'px';
-    box.style.width = rect.width + 'px'; box.style.height = rect.height + 'px';
-    const visibleLeft = Math.max(rect.left, 0); const visibleTop = Math.max(rect.top, 0);
+    box.style.top = rect.top + 'px'; 
+    box.style.left = rect.left + 'px';
+    box.style.width = rect.width + 'px'; 
+    box.style.height = rect.height + 'px';
+    
+    const visibleLeft = Math.max(rect.left, 0); 
+    const visibleTop = Math.max(rect.top, 0);
     const icon = box.querySelector('.vcc-icon');
-    icon.style.left = ((visibleLeft - rect.left) + 5) + 'px'; icon.style.top = ((visibleTop - rect.top) + 5) + 'px';
+    
+    // Position icon relative to visible area (handles scrolling)
+    if(icon) {
+        icon.style.left = ((visibleLeft - rect.left) + 15) + 'px'; 
+        icon.style.top = ((visibleTop - rect.top) + 15) + 'px';
+    }
+    
     applyEffects();
   });
+  
   requestAnimationFrame(trackLoop);
 }
-updateUI(); trackLoop();
+
+// Initial Kickoff
+updateUI(); 
+trackLoop();
