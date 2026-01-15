@@ -1,10 +1,16 @@
 # Ultimate Video Controller 🎥✨
 
 [![Download Extension](https://img.shields.io/badge/Download--Unpacked-brightgreen)](https://github.com/QuantumVoidd/Ultimate-Video-Controller/releases/latest)
+
 ![Visitors](https://api.visitorbadge.io/api/VisitorHit?user=QuantumVoidd&repo=Ultimate-Video-Controller&countColor=%2337B1E7A)
+
 ![GitHub stars](https://img.shields.io/github/stars/QuantumVoidd/Ultimate-Video-Controller?style=social)
 
 The most advanced video control suite for the web. Unlock professional-grade color grading, audio mastering, and geometry tools on YouTube, Twitch, Netflix, Prime Video, Disney+, and any other HTML5 video player.
+
+<img width="4059" height="1706" alt="Screenshot 2026-01-15 130427" src="https://github.com/user-attachments/assets/ff36964e-4b79-4150-ac86-769b9c36ee4d" />
+
+
 
 ## 🚀 Features
 
@@ -114,5 +120,6 @@ Chrome caches extension CSS aggressively.
 This project is licensed under the MIT License - feel free to modify and distribute.
 
 ---
+
 
 Created for Power Users.
