@@ -1,0 +1,158 @@
+/* --- MAIN MENU CONTAINER --- */
+#vcc-menu {
+  position: fixed; top: 60px; left: 20px;
+  width: 420px; /* Slightly wider to fit 5 buttons */
+  max-height: 85vh; overflow-y: auto;
+  background-color: rgba(12, 12, 12, 0.95);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px; padding: 16px;
+  font-family: 'Segoe UI', Roboto, Helvetica, sans-serif;
+  z-index: 2147483647; box-shadow: 0 20px 50px rgba(0,0,0,0.9);
+  display: none; color: #e0e0e0; user-select: none;
+}
+
+#vcc-menu::-webkit-scrollbar { width: 6px; }
+#vcc-menu::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
+#vcc-menu::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 3px; }
+#vcc-menu::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.4); }
+#vcc-menu.visible { display: block; animation: vcc-fade-in 0.2s ease-out; }
+
+@keyframes vcc-fade-in { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* --- SECTIONS --- */
+.vcc-section { margin-bottom: 12px; padding-bottom: 0; }
+.vcc-header {
+  font-size: 11px; font-weight: 700; color: #888;
+  letter-spacing: 1.2px; text-transform: uppercase;
+  margin-bottom: 8px; display: flex; align-items: center;
+}
+.vcc-header::after { content: ''; flex: 1; height: 1px; background: rgba(255,255,255,0.1); margin-left: 10px; }
+
+/* --- CONTROLS --- */
+.vcc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.vcc-control {
+  background: rgba(255,255,255,0.03); padding: 8px;
+  border-radius: 4px; border: 1px solid transparent; transition: border-color 0.2s;
+  display: flex; flex-direction: column; justify-content: center;
+}
+.vcc-control:hover { border-color: rgba(255,255,255,0.1); }
+.vcc-control.full-width { grid-column: span 2; }
+
+.vcc-info { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 10px; font-weight: 600; }
+.vcc-label { color: #aaa; text-transform: uppercase; }
+.vcc-val { color: #00d2ff; font-family: monospace; }
+
+/* --- SLIDERS --- */
+input[type=range].vcc-slider { -webkit-appearance: none; width: 100%; background: transparent; margin: 0; display: block; }
+input[type=range].vcc-slider:focus { outline: none; }
+input[type=range].vcc-slider::-webkit-slider-runnable-track { width: 100%; height: 3px; cursor: pointer; background: rgba(255, 255, 255, 0.15); border-radius: 2px; }
+input[type=range].vcc-slider::-webkit-slider-thumb {
+  -webkit-appearance: none; height: 10px; width: 10px; border-radius: 50%; background: #ccc;
+  cursor: pointer; margin-top: -3.5px; transition: transform 0.1s, background 0.1s;
+}
+input[type=range].vcc-slider:hover::-webkit-slider-thumb { background: #fff; transform: scale(1.2); }
+
+/* --- TOGGLES & DPAD --- */
+.vcc-toggle-col { display: flex; flex-direction: column; gap: 5px; height: 100%; }
+.vcc-toggle-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%; }
+.vcc-toggle-row.thirds { grid-template-columns: 1fr 1fr 1fr; }
+.vcc-toggle-row.fourths { grid-template-columns: 1fr 1fr 1fr 1fr; }
+/* NEW: 5 Columns for Actions */
+.vcc-toggle-row.fifths { grid-template-columns: repeat(5, 1fr); }
+
+.vcc-toggle {
+  background: rgba(255,255,255,0.05); color: #aaa;
+  border: 1px solid rgba(255,255,255,0.1); padding: 6px 4px;
+  font-size: 9px; text-transform: uppercase; cursor: pointer; border-radius: 4px; font-weight: 600;
+  transition: all 0.2s; display: flex; align-items: center; justify-content: center;
+  text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.vcc-toggle:hover { background: rgba(255,255,255,0.1); color: #fff; }
+.vcc-toggle.active { background: rgba(0, 210, 255, 0.15); border-color: rgba(0, 210, 255, 0.4); color: #00d2ff; }
+.vcc-toggle.danger { color: #ff8888; border-color: rgba(255,0,0,0.3); } 
+.vcc-toggle.danger:hover { background: rgba(255,0,0,0.2); }
+
+.vcc-dpad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; width: 100%; }
+.vcc-dpad-btn {
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #ccc;
+  padding: 5px; border-radius: 4px; cursor: pointer; font-size: 9px;
+  display: flex; align-items: center; justify-content: center; transition: all 0.1s;
+}
+.vcc-dpad-btn:hover { background: rgba(255,255,255,0.2); color: #fff; }
+.vcc-dpad-btn:active { background: rgba(0, 210, 255, 0.3); border-color: #00d2ff; }
+.vcc-dpad-btn.center { font-size: 7px; color: #888; }
+.vcc-dpad-empty { visibility: hidden; }
+
+/* --- TIMECODE & INPUT --- */
+.vcc-timecode-display {
+  font-family: 'Consolas', 'Courier New', monospace; font-size: 14px; color: #00d2ff; text-align: center;
+  background: rgba(0,0,0,0.5); padding: 6px; border-radius: 4px; margin-bottom: 8px;
+  border: 1px solid rgba(255,255,255,0.1); letter-spacing: 1px;
+}
+.vcc-goto-input {
+  width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+  color: #fff; font-family: monospace; padding: 6px; border-radius: 4px;
+  text-align: center; margin-top: 6px; font-size: 11px;
+}
+.vcc-goto-input:focus { outline: none; border-color: #00d2ff; background: rgba(0, 210, 255, 0.1); }
+
+/* --- BOOKMARKS --- */
+.vcc-bookmark-list {
+  max-height: 100px; overflow-y: auto; margin-top: 5px;
+  border: 1px solid rgba(255,255,255,0.05); border-radius: 4px;
+}
+.vcc-bookmark-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 6px 8px; background: rgba(255,255,255,0.02);
+  border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer;
+}
+.vcc-bookmark-item:hover { background: rgba(255,255,255,0.08); }
+.vcc-bm-time { color: #00d2ff; font-family: monospace; font-size: 10px; }
+.vcc-bm-del { color: #ff6b6b; font-weight: bold; padding: 2px 6px; font-size: 10px; border-radius: 2px; }
+.vcc-bm-del:hover { background: rgba(255,0,0,0.2); }
+
+/* --- FOOTER --- */
+.vcc-actions { display: flex; gap: 10px; margin-top: 15px; }
+.vcc-btn {
+  flex: 1; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: #ccc;
+  padding: 10px 20px; border-radius: 4px; font-size: 11px; font-weight: 700; text-transform: uppercase; cursor: pointer; transition: all 0.2s;
+}
+.vcc-btn:hover { background: rgba(255, 255, 255, 0.15); color: #fff; }
+.vcc-btn.reset { border-color: rgba(255, 60, 60, 0.3); color: #ff6b6b; }
+.vcc-btn.reset:hover { background: rgba(255, 60, 60, 0.15); }
+
+/* --- OVERLAY --- */
+.vcc-overlay-box { position: fixed; z-index: 2147483646; pointer-events: none; }
+
+@keyframes vcc-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+.vcc-icon {
+  position: absolute; width: 20px; height: 20px;
+  background-color: transparent; background-size: contain; background-position: center; background-repeat: no-repeat;
+  cursor: pointer; z-index: 2147483647; pointer-events: auto; opacity: 0.6;
+  animation: vcc-spin 10s linear infinite; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.8));
+  box-sizing: border-box; padding: 0;
+}
+.vcc-icon:hover { opacity: 1; animation-duration: 2s; transform: scale(1.1); }
+
+.vcc-focus-active { box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.95) !important; }
+.vcc-vignette-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 2147483640; }
+.vcc-grid-layer {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 2147483644; display: none;
+}
+.vcc-grid-layer::before {
+  content: ''; position: absolute; top: 33.33%; left: 0; width: 100%; height: 1px;
+  background: rgba(255,255,255,0.3); box-shadow: 0 33.33vh 0 rgba(255,255,255,0.3);
+}
+.vcc-grid-layer::after {
+  content: ''; position: absolute; top: 0; left: 33.33%; width: 1px; height: 100%;
+  background: rgba(255,255,255,0.3); box-shadow: 33.33vw 0 0 rgba(255,255,255,0.3);
+}
+.vcc-crosshair {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 40px; height: 40px; pointer-events: none; z-index: 2147483645; opacity: 0.8; display: none;
+}
+.vcc-crosshair::before, .vcc-crosshair::after { content: ''; position: absolute; background: #00ff00; box-shadow: 0 0 2px black; }
+.vcc-crosshair::before { top: 19px; left: 0; width: 40px; height: 2px; }
+.vcc-crosshair::after { top: 0; left: 19px; width: 2px; height: 40px; }
+#vcc-svg-engine { position: absolute; height: 0; width: 0; overflow: hidden; }
