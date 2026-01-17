@@ -14,7 +14,8 @@
 
 The most advanced video control suite for the web. Unlock professional-grade color grading, audio mastering, and geometry tools on YouTube, Twitch, Netflix, Prime Video, Disney+, and any other HTML5 video player.
 
-<img width="4059" height="1706" alt="Screenshot 2026-01-15 130427" src="https://github.com/user-attachments/assets/ff36964e-4b79-4150-ac86-769b9c36ee4d" />
+<img width="1973" height="1605" alt="Screenshot 2026-01-17 172402" src="https://github.com/user-attachments/assets/07d341a6-923a-4fa6-923d-45ce6c055eec" />
+
 
 
 
@@ -129,3 +130,4 @@ This project is licensed under the MIT License - feel free to modify and distrib
 
 
 Created for Power Users.
+
